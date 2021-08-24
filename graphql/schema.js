@@ -24,11 +24,14 @@ input UserInputData {
    name : String!
    password : String!
 }
-
+type RootQuery {
+    hello : String
+}
 type RootMutat {
-    CreateUser(userInput : UserInputData) : User
+    createUser(userInput : UserInputData) : User!
 }
 schema {
+    query : RootQuery
     mutation : RootMutat
 }
 `)

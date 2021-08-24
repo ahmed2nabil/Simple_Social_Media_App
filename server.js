@@ -11,7 +11,8 @@ app.use(
     '/graphql',
     graphqlHTTP({
     schema : graphqlSchema,
-    rootValue : graphqlResolver
+    rootValue : graphqlResolver,
+    graphiql : true
 }))
 
 const url = "mongodb+srv://user:passwordnode@cluster0.xbewz.mongodb.net/SMDB?retryWrites=true&w=majority"
