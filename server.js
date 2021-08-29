@@ -7,6 +7,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const graphqlSchema = require('./graphql/schema');
 const graphqlResolver = require('./graphql/reslovers');
+const auth = require('./middlewares/is-auth');
+
+app.use(auth.verfiyToken);
 app.use(
     '/graphql',
     graphqlHTTP({
