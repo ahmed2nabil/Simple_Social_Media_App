@@ -27,11 +27,17 @@ input UserInputData {
    name : String!
    password : String!
 }
+input PostInputData {
+    title : String!
+    content : String!
+    imageUrl : String!
+}
 type RootQuery {
     login(email: String! , password: String!) : AuthData!
 }
 type RootMutat {
     createUser(userInput : UserInputData) : User!
+    createPost(postInput : PostInputData) : Post!
 }
 schema {
     query : RootQuery
