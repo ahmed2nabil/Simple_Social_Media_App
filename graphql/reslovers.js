@@ -1,8 +1,10 @@
 const User = require("../models/user");
 const Post = require("../models/post");
+const config = require("../utils/config");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
+
 module.exports = {
 createUser : async function({ userInput },req){
 const errors = [];
@@ -52,7 +54,7 @@ login : async function({email , password}) {
     const token = jwt.sign({
         userId : user._id.toString(),
         email : user.email
-    },'somesupersecretsecret',
+    },config.secret,
     {expiresIn : '1h'}
     );
     return { token : token , userId : user._id.toString()}
@@ -76,7 +78,7 @@ createPost : async function({postInput},req){
         error.code = 422;
         throw error;
     }
-const user = User.findById(req.userId);
+const user = await User.findById(req.userId);
 if(!user) {
     const error = new Error('Invalid user.');
     error.code = 401;
@@ -86,7 +88,7 @@ if(!user) {
         title : postInput.title,
         content : postInput.content,
         imageUrl : postInput.imageUrl,
-        creator : user
+        creator :user
     });
     const newPost = await post.save();
     user.posts.push(newPost);
@@ -95,7 +97,7 @@ if(!user) {
         ...newPost._doc,
         _id : newPost._id.toString(), 
         createdAt : newPost.createdAt.toISOString(),
-        updateAt : newPost.updatedAt.toISOString()
+        updatedAt : newPost.updatedAt.toISOString()
     }
 }
 

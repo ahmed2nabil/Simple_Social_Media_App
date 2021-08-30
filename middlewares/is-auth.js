@@ -19,8 +19,7 @@ jwt.verify(token,config.secret,function(err, decoded) {
         req.isAuth = false;
         return next();
         }
-
-    req.userId = decoded.id;
+    req.userId = decoded.userId;
     req.isAuth = true;
     next();
 })
