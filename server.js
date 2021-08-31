@@ -12,7 +12,7 @@ const graphqlSchema = require('./graphql/schema');
 const graphqlResolver = require('./graphql/reslovers');
 const auth = require('./middlewares/is-auth');
 
-
+const {clearImage} = require("./utils/file");
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, 'images');
@@ -76,10 +76,6 @@ app.use(
 }))
 
 
-const clearImage = filePath => {
-    filePath = path.join(__dirname, '..', filePath);
-    fs.unlink(filePath, err => console.log(err));
-  };
 const url = "mongodb+srv://user:passwordnode@cluster0.xbewz.mongodb.net/SMDB?retryWrites=true&w=majority"
 mongoose.connect(url,{useUnifiedTopology :true,useNewUrlParser:true})
 .then(console.log('DB Connected successfully'))
