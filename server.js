@@ -43,7 +43,12 @@ const fileStorage = multer.diskStorage({
 app.use(auth.verfiyToken);
 
 app.put("/post-image",(req,res,next) => {
-    if(!req.file){
+  if(!req.isAuth) {
+    const error = new Error('Not authenticated');
+    error.code = 401;
+    throw error;
+}
+  if(!req.file){
         return res.status(200).json({message : "No file provided"});
     }
     if(req.body.oldPath) {
