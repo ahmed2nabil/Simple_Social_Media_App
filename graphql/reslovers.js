@@ -216,6 +216,43 @@ deletePost : async function({id},req){
     user.posts.pull(id);
 await user.save();
     return true;
+},
+user: async function (args,res) {
+    if(!req.isAuth) {
+        const error = new Error('Not authenticated');
+        error.code = 401;
+        throw error;
+    }
+    const user = await User.findById(req.userid); 
+    if(!user) {
+        const error = new Error('Not User Found!');
+        error.code = 404;
+        throw error;
+    }
+    return {
+        ...user._doc,
+        _id  : user._id.toString()
+    }
+},
+updateStatus : async function({status},req){
+    if(!req.isAuth) {
+        const error = new Error('Not authenticated');
+        error.code = 401;
+        throw error;
+    }
+    const user = await User.findById(req.userid); 
+    if(!user) {
+        const error = new Error('Not User Found!');
+        error.code = 404;
+        throw error;
+    }
+    user.status = status;
+const updatedUser = await user.save();
+    return {
+        ...updatedUser._doc,
+        _id  : updatedUser._id.toString(),
+        status : updatedUser.status
+    }
 }
 
 };
